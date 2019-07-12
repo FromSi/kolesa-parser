@@ -29,9 +29,8 @@ def create_notification(request):
     city -- ID города
     """
     try:
-        if int(request.headers.get('Type-Update')) == 1: # error
+        if int(request.headers.get('Type-Update')) == 1:
             if request.data.get('mark') != None:
-                print('123213')
                 mark = models.Mark.objects.get(id=request.data.get('mark'))
                 mark = mark.value
             else:

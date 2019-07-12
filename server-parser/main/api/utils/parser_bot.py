@@ -2,15 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 import codecs
- 
-
-url = 'https://kolesa.kz'
-# html = codecs.open("page.html", 'r').read()
 
  
-def _get_html(path):
+def _get_html(link):
     """Получить HTML страницу."""
-    response = requests.get(url + path)
+    response = requests.get(link)
     return response.text
 
 
@@ -97,20 +93,17 @@ def _make_all(link):
     return ads
 
 
-def _job():
+def _job(link):
     """Тело алгоритма."""
     ads = []
-    link_base = '/cars/?sort_by=add_date-asc'
-    links = _get_links(_get_html(link_base), link_base)
+    links = _get_links(_get_html(link), link)
 
     with Pool(40) as p:
         ads += p.map(_make_all, links)
 
-    # links = _get_links(html, link_base)
-    print(ads)
-    print(len(ads[0]), len(ads[1]), len(ads[2]), len(ads[3]), len(ads[4]))
+    return ads
 
 
-def start():
+def get_ads(link):
     """Запуск алгоритма."""
-    _job()
+    return _job(link)

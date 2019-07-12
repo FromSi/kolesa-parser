@@ -5,7 +5,8 @@ from . import models
 admin.site.register(models.City)
 admin.site.register(models.Mark)
 admin.site.register(models.Type)
-admin.site.register(models.Price)
+admin.site.register(models.Ad)
+admin.site.register(models.Picture)
 admin.site.register(models.Profile)
 
 

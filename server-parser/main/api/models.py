@@ -73,23 +73,68 @@ class Type(models.Model):
         return f'{self.name} [{self.value}]'
 
 
-class Price(models.Model):
-    """Цена.
+class Ad(models.Model):
+    """Объявления.
 
     Описание полей:
-    from_price -- цена от
-    to_price -- цена до
+    title -- заголовок
+    price -- цена
+    description -- описание
+    city -- город
+    date -- дата создания
+    views -- количество просмотров
     """
-    from_price = models.PositiveIntegerField(blank=True, 
-                                             null=True,
-                                             verbose_name='Цена от')
-    to_price = models.IntegerField(blank=True, 
+    title = models.CharField(max_length=255,
+                             blank=True, 
+                             null=True,
+                             verbose_name='Заголовок')
+    price = models.CharField(max_length=255,
+                             blank=True, 
+                             null=True,
+                             verbose_name='Цена')
+    description = models.CharField(max_length=255,
+                                   blank=True, 
                                    null=True,
-                                   verbose_name='Цена до')
+                                   verbose_name='Описание')
+    city = models.CharField(max_length=255,
+                            blank=True, 
+                            null=True,
+                            verbose_name='Город')
+    date = models.CharField(max_length=255,
+                            blank=True, 
+                            null=True,
+                            verbose_name='Дата')
+    views = models.CharField(max_length=255,
+                             blank=True, 
+                             null=True,
+                             verbose_name='Просмотры')
     
     class Meta:
-        verbose_name = 'Цена'
-        verbose_name_plural = 'Цены'
+        verbose_name = 'Объявление'
+        verbose_name_plural = 'Объявления'
+        
+    def __str__(self):
+        return f'{self.title} - {self.description}'
+
+
+class Picture(models.Model):
+    """Изображения.
+
+    Описание полей:
+    url -- ссылка на картинку
+    ad -- ссылка на объявление
+    """
+    url = models.CharField(max_length=255,
+                           blank=True, 
+                           null=True,
+                           verbose_name='Ссылка')
+    ad = models.ForeignKey(Ad, 
+                           on_delete=models.CASCADE,
+                           verbose_name='Объявление')
+    
+    class Meta:
+        verbose_name = 'Изображение'
+        verbose_name_plural = 'Изображения'
         
     def __str__(self):
         return f'{self.from_price}-{self.to_price}'
