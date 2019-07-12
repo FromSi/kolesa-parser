@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class City(models.Model):
@@ -111,7 +111,7 @@ class Profile(models.Model):
                                  blank=True, 
                                  null=True,
                                  verbose_name='Статус')
-    user = models.ForeignKey(User, 
+    user = models.ForeignKey(get_user_model(), 
                              on_delete=models.CASCADE,
                              verbose_name='Пользователь')
     

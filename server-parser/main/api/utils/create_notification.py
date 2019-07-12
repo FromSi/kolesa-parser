@@ -22,30 +22,37 @@ def _get_url(url_base, **kwargs):
     if kwargs['type'] != None:
         url += '&' if first_symbol else '?'
         url += f'auto-car-grbody={kwargs["type"]}'
+        first_symbol = True
 
     if kwargs['city'] != None:
         url += '&' if first_symbol else '?'
         url += f'region={kwargs["city"]}'
+        first_symbol = True
 
     if kwargs['price_from'] != None:
         url += '&' if first_symbol else '?'
         url += f'price[from]={kwargs["price_from"]}'
+        first_symbol = True
 
     if kwargs['price_to'] != None:
         url += '&' if first_symbol else '?'
         url += f'price[to]={kwargs["price_to"]}'
+        first_symbol = True
 
     if kwargs['photo'] != None:
         url += '&' if first_symbol else '?'
         url += '_sys-hasphoto=2'
+        first_symbol = True
 
     if kwargs['torg'] != None:
         url += '&' if first_symbol else '?'
         url += '_sys-torg=1'
+        first_symbol = True
 
     if kwargs['auto_custom'] != None:
         url += '&' if first_symbol else '?'
         url += 'auto-custom=2'
+        first_symbol = True
 
     url += '&sort_by=add_date-asc' if first_symbol else '?sort_by=add_date-asc'
 
@@ -69,9 +76,9 @@ def create(data, profile, mark, t, city):
     url = _get_url(
         'https://kolesa.kz/', 
         model=data.get('model'),
-        mark=data.get(mark),
-        type=data.get(t),
-        city=data.get(city),
+        mark=mark,
+        type=t,
+        city=city,
         price_from=data.get('price_from'),
         price_to=data.get('price_to'),
         photo=data.get('photo'),

@@ -28,37 +28,38 @@ def create_notification(request):
     type -- ID типа машины
     city -- ID города
     """
-    if int(request.headers.get('Type-Update')) == 1: # error
-        
-        if request.data.get('mark'):
-            mark = models.Mark.objects.get(id=request.data.get('mark'))
-            mark = mark.value
-        else:
-            mark = ''
-        
-        if request.data.get('type'):
-            t = models.Type.objects.get(id=request.data.get('type'))
-            t = t.value
-        else:
-            t = ''
-        
-        if request.data.get('city'):
-            city = models.City.objects.get(id=request.data.get('city'))
-            city = city.value
-        else:
-            city = ''
+    try:
+        if int(request.headers.get('Type-Update')) == 1: # error
+            if request.data.get('mark') != None:
+                print('123213')
+                mark = models.Mark.objects.get(id=request.data.get('mark'))
+                mark = mark.value
+            else:
+                mark = ''
 
-        profile = models.Profile.objects.get(id=request.user.id)
-        create(request.data, profile, mark, t, city)
+            if request.data.get('type') != None:
+                t = models.Type.objects.get(id=request.data.get('type'))
+                t = t.value
+            else:
+                t = ''
 
-        return Response(status=status.HTTP_200_OK)
-    elif int(request.headers.get('Type-Update')) == 2: # error
-        print(request.user.id)
-        profile = models.Profile.objects.get(user__id=request.user.id)
-        profile.active = request.data.get('status')
-        profile.save()
-        
-        return Response(status=status.HTTP_200_OK)
-    else:
-        print(request.headers)
+            if request.data.get('city') != None:
+                city = models.City.objects.get(id=request.data.get('city'))
+                city = city.value
+            else:
+                city = ''
+
+            profile = models.Profile.objects.get(user_id=request.user.id)
+            create(request.data, profile, mark, t, city)
+
+            return Response(status=status.HTTP_200_OK)
+        elif int(request.headers.get('Type-Update')) == 2:
+            profile = models.Profile.objects.get(user_id=request.user.id)
+            profile.active = request.data.get('status')
+            profile.save()
+
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_409_CONFLICT)
+    except models.Profile.DoesNotExist:
         return Response(status=status.HTTP_409_CONFLICT)
