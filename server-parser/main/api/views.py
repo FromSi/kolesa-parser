@@ -14,6 +14,16 @@ class UserCreateAPIView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
 
 
+@api_view(['DELETE'])
+@permission_classes((IsAuthenticated,))
+def clear_all_ads(request):
+    """Очистить список объявлений профиля."""
+    profile = models.Profile.objects.get(user_id=request.user.id)
+    profile.ad.clear()
+
+    return Response(status=status.HTTP_200_OK)
+
+
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def create_notification(request):

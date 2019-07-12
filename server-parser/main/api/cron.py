@@ -11,7 +11,7 @@ def ad_scheduled_job():
 
         for ads_list in ads:
             for ad in ads_list:
-                if not models.Ad.objects.filter(id=ad['id']).exists():
+                if not models.Ad.objects.filter(uid=ad['id']).exists():
                     ad_list.append(ad)
 
                     new_ad = models.Ad(
@@ -20,8 +20,7 @@ def ad_scheduled_job():
                         price=ad['price'],
                         description=ad['description'],
                         city=ad['city'],
-                        date=ad['date'],
-                        views= ad['views']
+                        date=ad['date']
                     )
 
                     new_ad.save()
@@ -32,6 +31,13 @@ def ad_scheduled_job():
                             ad=new_ad
                         )
                         p.save()
+
+                    profile.ad.add(new_ad)
+                else:
+                    if not profile.ad.all().filter(uid=ad['id']).exists():
+                        ad_list.append(ad)
+                        old_ad = models.Ad.objects.get(uid=ad['id'])
+                        profile.ad.add(old_ad)
 
         for ad in ad_list:
             print(ad)

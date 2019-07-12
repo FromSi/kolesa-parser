@@ -83,11 +83,10 @@ class Ad(models.Model):
     description -- описание
     city -- город
     date -- дата создания
-    views -- количество просмотров
     """
     uid = models.PositiveIntegerField(blank=True, 
-                                        null=True,
-                                        verbose_name='UID')
+                                      null=True,
+                                      verbose_name='UID')
     title = models.CharField(max_length=255,
                              blank=True, 
                              null=True,
@@ -108,10 +107,6 @@ class Ad(models.Model):
                             blank=True, 
                             null=True,
                             verbose_name='Дата')
-    views = models.CharField(max_length=255,
-                             blank=True, 
-                             null=True,
-                             verbose_name='Просмотры')
     
     class Meta:
         verbose_name = 'Объявление'
@@ -151,6 +146,7 @@ class Profile(models.Model):
     url -- ссылка на парсинг конкретного объявления
     active -- статус дает понять, нужны ли объявления для данного профиля
     user -- ссылка на пользователя
+    ad -- объявления данного профиля
     """
     url = models.CharField(max_length=255,
                            blank=True, 
@@ -163,6 +159,9 @@ class Profile(models.Model):
     user = models.ForeignKey(get_user_model(), 
                              on_delete=models.CASCADE,
                              verbose_name='Пользователь')
+    ad = models.ManyToManyField(Ad, 
+                                blank=True, 
+                                verbose_name='Объявления')
     
     class Meta:
         verbose_name = 'Профиль'

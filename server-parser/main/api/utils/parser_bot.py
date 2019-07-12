@@ -10,9 +10,9 @@ def _get_html(link):
     return response.text
 
 
-def _get_links(html, link):
+def _get_links(html, link, def_page):
     links = []
-    numbers = int(_get_numbers_page(html))
+    numbers = int(_get_numbers_page(html, def_page))
 
     for i in range(numbers):
         links.append(f'{link}&page={i + 1}')
@@ -20,21 +20,21 @@ def _get_links(html, link):
     return links
 
 
-def _get_numbers_page(html):
+def _get_numbers_page(html, def_page):
     """Получить количество страниц."""
     soup = BeautifulSoup(html, 'lxml')
     spans = soup.find('div', {'class': 'pager'}).find('ul').findAll('span')
-    numbers = _get_list_numper_page(spans)
+    numbers = _get_list_numper_page(spans, def_page)
     
     return numbers
 
 
-def _get_list_numper_page(spans):
+def _get_list_numper_page(spans, def_page):
     """Вычисление количества страниц."""
-    if len(spans) <= 5:
+    if len(spans) <= def_page:
         return len(spans) if len(spans) > 0 else 1
     else:
-        return 5
+        return def_page
 
 
 def _get_ads(html):
@@ -66,8 +66,7 @@ def _get_ad_info(body):
                     .text
                     .replace(" ", "")
                     .replace("\n", ""),
-        'date': body.find('span', {'class', 'date'}).text,
-        'views': body.find('span', {'class', 'nb-views-int'}).text
+        'date': body.find('span', {'class', 'date'}).text
     }
 
 
@@ -96,7 +95,7 @@ def _make_all(link):
 def _job(link):
     """Тело алгоритма."""
     ads = []
-    links = _get_links(_get_html(link), link)
+    links = _get_links(_get_html(link), link, 1)
 
     with Pool(40) as p:
         ads += p.map(_make_all, links)
