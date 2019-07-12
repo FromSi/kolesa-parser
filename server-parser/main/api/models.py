@@ -77,6 +77,7 @@ class Ad(models.Model):
     """Объявления.
 
     Описание полей:
+    uid -- ID объявления
     title -- заголовок
     price -- цена
     description -- описание
@@ -84,6 +85,9 @@ class Ad(models.Model):
     date -- дата создания
     views -- количество просмотров
     """
+    uid = models.PositiveIntegerField(blank=True, 
+                                        null=True,
+                                        verbose_name='UID')
     title = models.CharField(max_length=255,
                              blank=True, 
                              null=True,
@@ -137,7 +141,7 @@ class Picture(models.Model):
         verbose_name_plural = 'Изображения'
         
     def __str__(self):
-        return f'{self.from_price}-{self.to_price}'
+        return f'{self.url}'
 
 
 class Profile(models.Model):

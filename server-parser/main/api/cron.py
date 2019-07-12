@@ -11,12 +11,11 @@ def ad_scheduled_job():
 
         for ads_list in ads:
             for ad in ads_list:
-                # print(not models.Ad.objects.filter(id=ad['id']).exists())
                 if not models.Ad.objects.filter(id=ad['id']).exists():
                     ad_list.append(ad)
 
                     new_ad = models.Ad(
-                        id=ad['id'],
+                        uid=ad['id'],
                         title=ad['title'],
                         price=ad['price'],
                         description=ad['description'],
@@ -34,5 +33,5 @@ def ad_scheduled_job():
                         )
                         p.save()
 
-        print(ad_list)
-        # print(ads)
+        for ad in ad_list:
+            print(ad)
