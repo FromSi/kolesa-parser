@@ -2,16 +2,43 @@ from rest_framework import generics, permissions
 from django.contrib.auth import get_user_model
 from . import serializers, models, handler_ads
 from .utils.create_notification import create
+from .utils import email
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from django.core.mail import send_mail
 
 
 class UserCreateAPIView(generics.CreateAPIView):
     """Класс позволяет регистрировать пользователей."""
     serializer_class = serializers.UserCreateSerializer
     queryset = get_user_model().objects.all()
+
+
+@api_view(['DELETE', 'POST'])
+@permission_classes((IsAuthenticated,))
+def email_profile(request):
+    """Изменение или удаление почты.
+    
+    Аргументы для POST:
+    email -- почта для будующих уведомлений
+    """
+    profile = models.Profile.objects.get(user_id=request.user.id)
+
+    if request.method == 'DELETE':
+        profile.email = None
+        profile.save()
+
+        return Response(status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        if request.data.get('email') != None:
+            profile.email = request.data.get('email')
+            profile.save()
+
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -97,5 +124,8 @@ def update_filter(request):
 
 def request_site(profile):
     ad_list = handler_ads.start(profile, 1)
+
+    if profile.email != None:
+        email.send(ad_list, profile.email)
 
     return ad_list

@@ -147,6 +147,7 @@ class Profile(models.Model):
     active -- статус дает понять, нужны ли объявления для данного профиля
     user -- ссылка на пользователя
     ad -- объявления данного профиля
+    email -- почта для уведомлений
     """
     url = models.CharField(max_length=255,
                            blank=True, 
@@ -156,6 +157,10 @@ class Profile(models.Model):
                                  blank=True, 
                                  null=True,
                                  verbose_name='Статус')
+    email = models.EmailField(max_length=254,
+                               blank=True, 
+                               null=True,
+                               verbose_name='Эл.почта')
     user = models.ForeignKey(get_user_model(), 
                              on_delete=models.CASCADE,
                              verbose_name='Пользователь')
