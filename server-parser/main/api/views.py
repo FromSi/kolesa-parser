@@ -1,6 +1,6 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
 from django.contrib.auth import get_user_model
-from . import serializers, models
+from . import serializers, models, handler_ads
 from .utils.create_notification import create
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -14,6 +14,27 @@ class UserCreateAPIView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
 
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_user_ads(request):
+    """Получить все объявления пользователя."""
+    answer = []
+    ads = models.Profile.objects.get(user_id=request.user.id).ad.all()
+
+    for ad in ads:
+        list_picture = []
+        pictures = models.Picture.objects.filter(ad_id=ad.id)
+        
+        for picture in pictures:
+            list_picture.append(picture.url)
+        
+        ad = serializers.AdListSerializer(ad).data
+        ad['pictures'] = list_picture
+        answer.append(ad)
+
+    return Response(answer)
+    
+
 @api_view(['DELETE'])
 @permission_classes((IsAuthenticated,))
 def clear_all_ads(request):
@@ -26,7 +47,7 @@ def clear_all_ads(request):
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
-def create_notification(request):
+def update_filter(request):
     """Метод позволяет записывать предпочтения пользователей.
     
     ЗАГОЛОВКИ-HTTP:
@@ -61,7 +82,7 @@ def create_notification(request):
             profile = models.Profile.objects.get(user_id=request.user.id)
             create(request.data, profile, mark, t, city)
 
-            return Response(status=status.HTTP_200_OK)
+            return Response(request_site(profile), status=status.HTTP_200_OK)
         elif int(request.headers.get('Type-Update')) == 2:
             profile = models.Profile.objects.get(user_id=request.user.id)
             profile.active = request.data.get('status')
@@ -72,3 +93,9 @@ def create_notification(request):
             return Response(status=status.HTTP_409_CONFLICT)
     except models.Profile.DoesNotExist:
         return Response(status=status.HTTP_409_CONFLICT)
+
+
+def request_site(profile):
+    ad_list = handler_ads.start(profile, 1)
+
+    return ad_list

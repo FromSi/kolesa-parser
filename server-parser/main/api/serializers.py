@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Profile
+from .models import Profile, Ad, Picture
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -22,3 +22,15 @@ class UserCreateSerializer(serializers.ModelSerializer):
         profile.save()
 
         return validated_data
+
+
+class PictureListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Picture
+        fields = ['url']
+
+
+class AdListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = '__all__'

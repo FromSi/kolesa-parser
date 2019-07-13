@@ -88,3 +88,5 @@ def create(data, profile, mark, t, city):
 
     profile.url = url
     profile.save()
+
+    return url

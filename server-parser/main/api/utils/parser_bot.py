@@ -92,10 +92,10 @@ def _make_all(link):
     return ads
 
 
-def _job(link):
+def _job(link, def_page):
     """Тело алгоритма."""
     ads = []
-    links = _get_links(_get_html(link), link, 1)
+    links = _get_links(_get_html(link), link, def_page)
 
     with Pool(40) as p:
         ads += p.map(_make_all, links)
@@ -103,6 +103,6 @@ def _job(link):
     return ads
 
 
-def get_ads(link):
+def get_ads(link, def_page):
     """Запуск алгоритма."""
-    return _job(link)
+    return _job(link, def_page)
