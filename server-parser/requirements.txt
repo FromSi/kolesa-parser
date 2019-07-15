@@ -2,3 +2,7 @@ django
 djangorestframework
 django-crontab
 django-cron
+beautifulsoup4
+requests
+lxml
+django-cors-headers
