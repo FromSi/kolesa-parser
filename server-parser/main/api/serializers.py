@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Profile, Ad, Picture
+from .models import Profile, Ad, Picture, City, Mark, Type
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -33,4 +33,22 @@ class PictureListSerializer(serializers.ModelSerializer):
 class AdListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
+        fields = '__all__'
+
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = '__all__'
+
+
+class MarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mark
+        fields = '__all__'
+
+
+class TypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Type
         fields = '__all__'

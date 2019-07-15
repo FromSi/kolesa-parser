@@ -7,7 +7,7 @@ def send(ads, email):
     for ad in ads:
         imgs = ''
         text += '\n'
-        text += f'ID объявления: {ad["id"]}\n'
+        text += f'Ссылка: https://kolesa.kz/a/show/{ad["id"]}\n'
         text += f'Заголовок: {ad["title"]}\n'
         text += f'Описание: {ad["description"]}\n'
         text += f'Город: {ad["city"]}\n'

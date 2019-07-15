@@ -8,5 +8,6 @@ urlpatterns = [
     path('ads/', views.get_user_ads),
     path('clear/ads/', views.clear_all_ads),
     path('auth/', obtain_auth_token),
+    path('filters/data/', views.get_filters_data),
     path('filter/', views.update_filter),
 ]

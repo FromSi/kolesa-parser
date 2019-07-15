@@ -4,7 +4,7 @@ from . import serializers, models, handler_ads
 from .utils.create_notification import create
 from .utils import email
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
@@ -16,7 +16,7 @@ class UserCreateAPIView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
 
 
-@api_view(['DELETE', 'POST'])
+@api_view(['GET', 'DELETE', 'POST'])
 @permission_classes((IsAuthenticated,))
 def email_profile(request):
     """Изменение или удаление почты.
@@ -31,6 +31,9 @@ def email_profile(request):
         profile.save()
 
         return Response(status=status.HTTP_200_OK)
+    elif request.method == 'GET':
+        profile = models.Profile.objects.get(user_id=request.user.id)        
+        return Response({'email': profile.email}, status=status.HTTP_200_OK)
     elif request.method == 'POST':
         if request.data.get('email') != None:
             profile.email = request.data.get('email')
@@ -39,6 +42,20 @@ def email_profile(request):
             return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def get_filters_data(request):
+    t = serializers.TypeSerializer(models.Type.objects.all(), many=True).data
+    mark = serializers.MarkSerializer(models.Mark.objects.all(), many=True).data
+    city = serializers.CitySerializer(models.City.objects.all(), many=True).data
+
+    return Response({
+        'type': t,
+        'mark': mark,
+        'city': city
+    })
 
 
 @api_view(['GET'])
