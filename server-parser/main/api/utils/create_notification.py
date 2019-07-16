@@ -15,41 +15,46 @@ def _get_url(url_base, **kwargs):
     url = url_base
     first_symbol = False
 
-    url += 'cars/' 
-    url += kwargs['mark'] + '/' if kwargs['mark'] != None else ''
-    url += kwargs['model'] + '/' if kwargs['model'] != None else ''
+    url += 'cars/'
 
-    if kwargs['type'] != None:
+
+    if kwargs.get('mark') != None:
+        url += f'{kwargs["mark"]}/'
+
+    if kwargs.get('model') != None:
+        url += f'{kwargs["model"]}/'
+
+    if kwargs.get('type') != None:
         url += '&' if first_symbol else '?'
         url += f'auto-car-grbody={kwargs["type"]}'
         first_symbol = True
 
-    if kwargs['city'] != None:
+    if kwargs.get('city') != None:
         url += '&' if first_symbol else '?'
         url += f'region={kwargs["city"]}'
         first_symbol = True
 
-    if kwargs['price_from'] != None:
+    if kwargs.get('price_from') != None:
         url += '&' if first_symbol else '?'
         url += f'price[from]={kwargs["price_from"]}'
         first_symbol = True
 
-    if kwargs['price_to'] != None:
+    if kwargs.get('price_to') != None:
         url += '&' if first_symbol else '?'
         url += f'price[to]={kwargs["price_to"]}'
         first_symbol = True
 
-    if kwargs['photo'] != None:
+    if kwargs.get('photo') != None:
         url += '&' if first_symbol else '?'
         url += '_sys-hasphoto=2'
         first_symbol = True
 
-    if kwargs['torg'] != None:
+    if kwargs.get('torg') != None:
         url += '&' if first_symbol else '?'
         url += '_sys-torg=1'
         first_symbol = True
 
-    if kwargs['auto_custom'] != None:
+    if kwargs.get('auto_custom') != None:
         url += '&' if first_symbol else '?'
         url += 'auto-custom=2'
         first_symbol = True

@@ -104,30 +104,30 @@ def update_filter(request):
     city -- ID города
     """
     try:
-        if int(request.headers.get('Type-Update')) == 1:
+        if request.data.get('status') == None:
             if request.data.get('mark') != None:
                 mark = models.Mark.objects.get(id=request.data.get('mark'))
                 mark = mark.value
             else:
-                mark = ''
+                mark = None
 
             if request.data.get('type') != None:
                 t = models.Type.objects.get(id=request.data.get('type'))
                 t = t.value
             else:
-                t = ''
+                t = None
 
             if request.data.get('city') != None:
                 city = models.City.objects.get(id=request.data.get('city'))
                 city = city.value
             else:
-                city = ''
+                city = None
 
             profile = models.Profile.objects.get(user_id=request.user.id)
             create(request.data, profile, mark, t, city)
 
             return Response(request_site(profile), status=status.HTTP_200_OK)
-        elif int(request.headers.get('Type-Update')) == 2:
+        elif request.data.get('status') != None:
             profile = models.Profile.objects.get(user_id=request.user.id)
             profile.active = request.data.get('status')
             profile.save()
