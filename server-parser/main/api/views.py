@@ -33,7 +33,7 @@ def email_profile(request):
         return Response(status=status.HTTP_200_OK)
     elif request.method == 'GET':
         profile = models.Profile.objects.get(user_id=request.user.id)        
-        return Response({'email': profile.email}, status=status.HTTP_200_OK)
+        return Response({'email': profile.email, 'active': profile.active}, status=status.HTTP_200_OK)
     elif request.method == 'POST':
         if request.data.get('email') != None:
             profile.email = request.data.get('email')
