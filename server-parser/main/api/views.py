@@ -75,7 +75,7 @@ def get_user_ads(request):
         ad = serializers.AdListSerializer(ad).data
         ad['pictures'] = list_picture
         answer.append(ad)
-
+ 
     return Response(answer)
     
 
