@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
+import validators
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -104,6 +105,13 @@ def update_filter(request):
     city -- ID города
     """
     try:
+        if request.data.get('url') != None and validators.url(request.data.get('url')):
+            profile = models.Profile.objects.get(user_id=request.user.id)
+            profile.url = request.data.get('url')
+            profile.save()
+
+            return Response(request_site(profile), status=status.HTTP_200_OK)
+
         if request.data.get('status') == None:
             if request.data.get('mark') != None:
                 mark = models.Mark.objects.get(id=request.data.get('mark'))
