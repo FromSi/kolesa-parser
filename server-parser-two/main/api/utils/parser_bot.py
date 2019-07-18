@@ -3,6 +3,15 @@ from bs4 import BeautifulSoup
 from multiprocessing import Pool
 import codecs
 
+# Никому
+# Низя
+# Знать
+# Что
+# В этом алгоритме происходит
+
+# Даже 
+# Мне С:
+# И да, я ленивый :3
  
 def _get_html(link):
     """Получить HTML страницу."""

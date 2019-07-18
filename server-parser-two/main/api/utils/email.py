@@ -2,27 +2,28 @@ from django.core.mail import send_mail
 
 
 def send(ads, email):
-    text = 'Привет! Мы для Вас нашли новые объявления!\n'
+    """Отправка сообщений по электронной почте."""
+    text = 'Привет! Мы для Вас нашли новые объявления!\n'        # Вступление
 
-    for ad in ads:
-        imgs = ''
-        text += '\n'
-        text += f'Ссылка: https://kolesa.kz/a/show/{ad["id"]}\n'
-        text += f'Заголовок: {ad["title"]}\n'
-        text += f'Описание: {ad["description"]}\n'
-        text += f'Город: {ad["city"]}\n'
-        text += f'Цена: {ad["price"]}\n'
-        text += f'Дата: {ad["date"]}\n'
+    for ad in ads:                                               # Перебор объявлений
+        imgs = ''                                                # Захотелось объявить переменную, которая лежит в комментарии
+        text += '\n'                                             # Enter
+        text += f'Ссылка: https://kolesa.kz/a/show/{ad["id"]}\n' # Ссылка на объявление
+        text += f'Заголовок: {ad["title"]}\n'                    # Зоголовок объявления
+        text += f'Описание: {ad["description"]}\n'               # Описание объвления
+        text += f'Город: {ad["city"]}\n'                         # Город.. угадай, чего?
+        text += f'Цена: {ad["price"]}\n'                         # Це..
+        text += f'Дата: {ad["date"]}\n'                          # Д..
 
-        #for img in ad["picture"]:
-        #    imgs += f'\n\t{img}'
+        #for img in ad["picture"]:                                 Перебираю изображения
+        #    imgs += f'\n\t{img}'                                  Добавляю ссылку изображения
 
-        #text += f'Изображение(-я): {imgs}\n-----\n'
+        #text += f'Изображение(-я): {imgs}\n-----\n'               Магия-шагия
 
-    send_mail(
-        'Новыe объявления',
-        text,
-        'fromsitest@yandex.com',
-        [email],
-        fail_silently=False,
+    send_mail(                                                   # Метод модуля Django по отправке писем по эл.почте
+        'Новыe объявления',                                      # Заголовок письма
+        text,                                                    # Текст, тело для нового письма
+        'fromsitest@yandex.com',                                 # Сервер отправляет письмо через...
+        [email],                                                 # Кому отправить чудо письмо?
+        fail_silently=False,                                     # ХЗ
     )
