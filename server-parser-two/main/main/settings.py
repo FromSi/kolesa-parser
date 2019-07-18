@@ -25,7 +25,7 @@ SECRET_KEY = '(4^riey$9t4e!n^s24(c$yr5$ub9i6_stq)ezy-wio4tcnbc-8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.101']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.101', '3.121.22.69']
 
 
 # Application definition
@@ -57,7 +57,7 @@ MIDDLEWARE = [
 ]
 
 CRONJOBS = [
-    ('*/1 * * * *', 'api.cron.ad_scheduled_job')
+    ('*/5 * * * *', 'api.cron.ad_scheduled_job')
 ]
 
 REST_FRAMEWORK = {

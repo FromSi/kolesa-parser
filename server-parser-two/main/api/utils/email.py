@@ -14,10 +14,10 @@ def send(ads, email):
         text += f'Цена: {ad["price"]}\n'
         text += f'Дата: {ad["date"]}\n'
 
-        for img in ad["picture"]:
-            imgs += f'\n\t{img}'
+        #for img in ad["picture"]:
+        #    imgs += f'\n\t{img}'
 
-        text += f'Изображение(-я): {imgs}\n-----\n'
+        #text += f'Изображение(-я): {imgs}\n-----\n'
 
     send_mail(
         'Новыe объявления',

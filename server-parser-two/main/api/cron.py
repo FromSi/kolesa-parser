@@ -8,7 +8,7 @@ def ad_scheduled_job():
     for task in tasks:
         ad_list = handler_ads.start(task.url, task.id, 1)
 
-        if not ad_list:
+        if ad_list:
             email.send(ad_list, task.email)
 
         for ad in ad_list:
